@@ -3,39 +3,17 @@ import ReactDOM from 'react-dom';
 
 const root = document.getElementById('root');
 
-const Title = () => {
-  return (
-    <h3
-      id="title"
-      onMouseEnter={() => {
-        console.log('mouse enter');
-      }}
-    >
-      Hello This is Title
-    </h3>
-  );
-};
-
-const Button = () => {
-  return (
-    <button
-      style={{ backgroundColor: 'orange' }}
-      onClick={() => {
-        console.log('I am clicked');
-      }}
-    >
-      Click me!
-    </button>
-  );
-};
-
-const Container = () => {
+const App = () => {
+  let [counter, setCounter] = React.useState(0);
+  const onClick = () => {
+    setCounter(counter + 1);
+  };
   return (
     <div>
-      <Title />
-      <Button />
+      <h3>Total Clicks: {counter}</h3>
+      <button onClick={onClick}>Click me</button>
     </div>
   );
 };
 
-ReactDOM.render(<Container />, root);
+ReactDOM.render(<App />, root);
