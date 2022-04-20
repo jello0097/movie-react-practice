@@ -1,47 +1,27 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
-function MinutesToHours() {
-  const [amount, setAmount] = React.useState(0);
-  const [inverted, setInverted] = React.useState(false);
-  const onChange = (event) => {
-    setAmount(event.target.value);
-  };
-  const reset = () => setAmount(0);
-  const onInvert = () => {
-    reset();
-    setInverted((current) => !current);
-  };
+function Btn({ text, emoji, number = 2 }) {
   return (
-    <div>
-      <label htmlFor="minutes">Minutes</label>
-      <input
-        value={inverted ? amount * 60 : amount}
-        className="minutes"
-        placeholder="Minutes"
-        type="number"
-        onChange={onChange}
-        disabled={inverted}
-      />
-      <label htmlFor="hours">Hours</label>
-      <input
-        value={inverted ? amount : Math.round(amount / 60)}
-        className="hours"
-        placeholder="Hours"
-        type="number"
-        onChange={onChange}
-        disabled={!inverted}
-      />
-      <button onClick={reset}>Reset</button>
-      <button onClick={onInvert}>{inverted ? 'Trun back' : 'Invert'}</button>
-    </div>
+    <button
+      style={{
+        backgroundColor: 'black',
+        color: 'white',
+        padding: '10px 20px',
+        border: 0,
+        borderRadius: 10,
+      }}
+    >
+      {text}{emoji}{number}
+    </button>
   );
 }
-
-function KmToMiles() {
-  return <h3>Km to Miles</h3>;
+Btn.propTypes = {
+  text: PropTypes.string,
+  emoji: PropTypes.string,
+  number: PropTypes.number.isRequired,
 }
-
 function App() {
   const [index, setIndex] = React.useState('not-selected');
   const onSelect = (event) => {
@@ -49,16 +29,8 @@ function App() {
   };
   return (
     <div>
-      <h1>Super Convertor</h1>
-      <select value={index} onChange={onSelect}>
-        <option value="not-selected">Select plz!</option>
-        <option value="0">Minutes & Hours</option>
-        <option value="1">Km t& Miles</option>
-      </select>
-      <hr />
-      {index === 'not-selected' ? 'Select unit please!' : null}
-      {index === '0' ? <MinutesToHours /> : null}
-      {index === '1' ? <KmToMiles /> : null}
+      <Btn text="Save Changes" emoji="🍟" number={1} />
+      <Btn text="Continue" />
     </div>
   );
 }
