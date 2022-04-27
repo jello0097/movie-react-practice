@@ -3,17 +3,25 @@ import PropTypes from 'prop-types';
 
 function Movie({ id, coverImg, title, summary, genres }) {
   return (
-    <div>
-      <img src={coverImg} alt={title} />
-      <h2>
-        <Link to={`/movie/${id}`}>{title}</Link>
-      </h2>
-      <p>{summary}</p>
-      <ul>
-        {genres.map((g) => (
-          <li key={g}>{g}</li>
-        ))}
-      </ul>
+    <div className="movie">
+      <div className="movie__poster">
+        <img src={coverImg} alt={title} />
+      </div>
+      <div className="movie__data">
+        <h3 className="movie__title">
+          <Link to={`/movie/${id}`}>{title}</Link>
+        </h3>
+        <ul className="movie__genres">
+          {genres.map((genre, index) => (
+            <li className="genres__genre" key={index}>
+              {genre}
+            </li>
+          ))}
+        </ul>
+        <p className="movie__summary">
+          {summary.length > 320 ? summary.slice(0, 320) : summary}
+        </p>
+      </div>
     </div>
   );
 }
