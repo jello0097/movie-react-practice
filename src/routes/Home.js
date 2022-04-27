@@ -1,42 +1,48 @@
-import { useState, useEffect } from 'react';
+import React from 'react';
 import Movie from '../components/Movie';
 import Loading from '../components/Loading';
+import axios from 'axios';
 
-function Home() {
-  const [loading, setLoading] = useState(true);
-  const [movies, setMovies] = useState([]);
-  const getMovies = async () => {
-    const response = await fetch(
-      `https://yts.mx/api/v2/list_movies.json?minimum_rating=8.0&sort_by=new`,
-    );
-    const json = await response.json();
-    if (json.status === 'ok') {
-      setMovies(json.data.movies);
-      setLoading(false);
-    }
+class Home extends React.Component {
+  state = {
+    isLoading: true,
+    movies: [],
   };
-  useEffect(() => {
-    getMovies();
-  }, []);
 
-  return (
-    <div>
-      {loading ? (
-        <Loading />
-      ) : (
-        movies.map((movie) => (
-          <Movie
-            key={movie.id}
-            id={movie.id}
-            coverImg={movie.medium_cover_image}
-            title={movie.title}
-            summary={movie.summary}
-            genres={movie.genres}
-          />
-        ))
-      )}
-    </div>
-  );
+  getMovies = async () => {
+    const {
+      data: {
+        data: { movies },
+      },
+    } = await axios.get('https://yts-proxy.now.sh/list_movies.json?minimum_rating=8.0&sort_by=new');
+    this.setState({ movies: movies, isLoading: false });
+  };
+
+  componentDidMount() {
+    this.getMovies();
+  }
+
+  render() {
+    const { isLoading, movies } = this.state;
+    return (
+      <div>
+        {isLoading ? (
+          <Loading />
+        ) : (
+          movies.map((movie) => (
+            <Movie
+              key={movie.id}
+              id={movie.id}
+              coverImg={movie.medium_cover_image}
+              title={movie.title}
+              summary={movie.summary}
+              genres={movie.genres}
+            />
+          ))
+        )}
+      </div>
+    );
+  }
 }
 
 export default Home;
